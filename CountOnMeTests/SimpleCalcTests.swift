@@ -16,11 +16,36 @@ class SimpleCalcTests: XCTestCase {
         super.setUp()
         simpleCalc = SimpleCalc()
     }
-    func testGiven() {
-        let inputs = ["2", "+", "3"]
+
+    func testAdditionElementsExpectedResultEqual() {
+        let elements = ["2", "+", "3"]
         let expected = "5"
 
-        let result = simpleCalc.reduceOperation(inputs)
+        let result = simpleCalc.reduceOperation(elements)
+
+        XCTAssertEqual(result, expected)
+    }
+    func testSoustractionElementsExpectedResultEqual() {
+        let elements = ["3", "-", "2"]
+        let expected = "1"
+
+        let result = simpleCalc.reduceOperation(elements)
+
+        XCTAssertEqual(result, expected)
+    }
+    func testMultiplicationElementsExpectedResultEqual() {
+        let elements = ["2", "x", "3"]
+        let expected = "6"
+
+        let result = simpleCalc.reduceOperation(elements)
+
+        XCTAssertEqual(result, expected)
+    }
+    func testDivisionBy0ElementsExpectedResultEqualErreur() {
+        let elements = ["2", "/", "0"]
+        let expected = "Erreur"
+
+        let result = simpleCalc.reduceOperation(elements)
 
         XCTAssertEqual(result, expected)
     }
