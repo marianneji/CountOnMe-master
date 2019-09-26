@@ -10,7 +10,7 @@ import Foundation
 
 struct SimpleCalc {
 
-    // Error check computed variables
+    // MARK: Error Checks
     func expressionHaveEnoughElement(_ elements: [String]) -> Bool {
         return elements.count >= 3
     }
@@ -18,6 +18,12 @@ struct SimpleCalc {
     func canAddOperator(_ elements: [String]) -> Bool {
         return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != "/"
     }
+
+    func canAddDot(_ elements: [String]) -> Bool {
+        if let lastElement = elements.last { return Double(lastElement) != nil }
+        return false
+    }
+
     // Iterate over operations while an operand still here
     func reduceOperation(_ elements: [String]) -> String? {
         var operationsToReduce = elements
@@ -33,6 +39,9 @@ struct SimpleCalc {
             case "-": result = left - right
             case "x": result = left * right
             case "/": result = left / right
+            if right == 0 {
+                return "Erreur"
+                }
             default: fatalError("Unknown operator !")
             }
 
