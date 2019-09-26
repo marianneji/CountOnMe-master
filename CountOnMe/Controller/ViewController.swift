@@ -22,11 +22,10 @@ class ViewController: UIViewController {
     var expressionHaveResultOr0: Bool {
         return textView.text.firstIndex(of: "=") != nil || textView.text == "0"
     }
-    
+
     // View Life cycles
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
     }
 
     fileprivate func allClear() {
@@ -48,11 +47,18 @@ class ViewController: UIViewController {
         }
         if expressionHaveResultOr0 {
             textView.text = ""
-
         }
         textView.text.append(numberText)
     }
-    
+    @IBAction func tappedDotButton(_ sender: UIButton) {
+        guard let dotNumber = sender.title(for: .normal) else { return }
+        if simpleCalc.canAddDot(elements) {
+            textView.text.append(dotNumber)
+        } else {
+            errorAlert("Vous ne pouvez pas rajouter de virgule")
+        }
+    }
+
     @IBAction func tappedClearButton(_ sender: UIButton) {
         allClear()
     }
@@ -64,7 +70,7 @@ class ViewController: UIViewController {
             errorAlert("Un operateur est déja mis !")
         }
     }
-    
+
     @IBAction func tappedSubstractionButton(_ sender: UIButton) {
         if simpleCalc.canAddOperator(elements) {
             textView.text.append(" - ")
@@ -80,6 +86,7 @@ class ViewController: UIViewController {
             errorAlert("Un operateur est déja mis !")
         }
     }
+
     @IBAction func tappedMultiplicationButton(_ sender: UIButton) {
         if simpleCalc.canAddOperator(elements) {
             textView.text.append(" x ")
@@ -87,16 +94,15 @@ class ViewController: UIViewController {
             errorAlert("Un operateur est déja mis !")
         }
     }
-    @IBAction func tappedEqualButton(_ sender: UIButton) {
 
+    @IBAction func tappedEqualButton(_ sender: UIButton) {
         guard simpleCalc.expressionHaveEnoughElement(elements) else {
             return errorAlert("Entrez une expression correcte !")
         }
+
         if let result = simpleCalc.reduceOperation(elements) {
             textView.text.append(" = \(result)")
             sender.isEnabled = false
         }
-
     }
 }
-
