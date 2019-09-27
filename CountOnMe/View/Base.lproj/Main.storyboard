@@ -172,7 +172,7 @@
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OoV-rd-Kuo">
                                                         <rect key="frame" x="0.0" y="162" width="86.5" height="44"/>
-                                                        <color key="backgroundColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="backgroundColor" systemColor="systemRedColor" red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="26"/>
                                                         <state key="normal" title="AC">
                                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -283,6 +283,10 @@
                         <outletCollection property="numberButtons" destination="EPx-3X-zTa" collectionClass="NSMutableArray" id="tmM-9D-IHt"/>
                         <outletCollection property="numberButtons" destination="lad-SR-mqj" collectionClass="NSMutableArray" id="0dq-6F-JO8"/>
                         <outletCollection property="numberButtons" destination="pqg-Uz-Vh8" collectionClass="NSMutableArray" id="gam-mr-nC1"/>
+                        <outletCollection property="operatorsButtons" destination="o36-Qz-3ay" collectionClass="NSMutableArray" id="qQZ-H4-dsz"/>
+                        <outletCollection property="operatorsButtons" destination="3zr-HC-0N9" collectionClass="NSMutableArray" id="YjH-75-Fjw"/>
+                        <outletCollection property="operatorsButtons" destination="DQU-P5-55X" collectionClass="NSMutableArray" id="CFE-JS-glK"/>
+                        <outletCollection property="operatorsButtons" destination="FN3-Yd-ksV" collectionClass="NSMutableArray" id="3PP-Zw-50s"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7XP-3c-sJZ" sceneMemberID="firstResponder"/>
