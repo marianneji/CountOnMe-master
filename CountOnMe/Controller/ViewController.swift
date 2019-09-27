@@ -12,6 +12,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var textView: UITextView!
     @IBOutlet var numberButtons: [UIButton]!
     @IBOutlet weak var equalButton: UIButton!
+    @IBOutlet var operatorsButtons: [UIButton]!
 
     let simpleCalc = SimpleCalc()
 
@@ -27,11 +28,22 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    fileprivate func disableOperatorsButtons() {
+        for button in operatorsButtons {
+            button.isEnabled = false
+        }
+    }
+    fileprivate func enableOperatorsButtons() {
+           for button in operatorsButtons {
+               button.isEnabled = true
+           }
+       }
 
     fileprivate func allClear() {
         textView.text.removeAll()
         textView.text = "0"
         equalButton.isEnabled = true
+        enableOperatorsButtons()
     }
 
     fileprivate func errorAlert(_ message: String) {
@@ -42,6 +54,7 @@ class ViewController: UIViewController {
     // View actions
     @IBAction func tappedNumberButton(_ sender: UIButton) {
         equalButton.isEnabled = true
+        enableOperatorsButtons()
         guard let numberText = sender.title(for: .normal) else {
             return
         }
@@ -103,6 +116,7 @@ class ViewController: UIViewController {
         if let result = simpleCalc.reduceOperation(elements) {
             textView.text.append(" = \(result)")
             sender.isEnabled = false
+            disableOperatorsButtons()
         }
     }
 }
