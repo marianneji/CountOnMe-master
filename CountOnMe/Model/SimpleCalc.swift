@@ -50,9 +50,12 @@ struct SimpleCalc {
         }
         return operationsToReduce.first!
     }
-    // remove dot and zero to display an integer
+    // remove dot and zero to display an number
     private func removeDotZero(result: Double) -> String {
-        let doubleAsString = NumberFormatter.localizedString(from: (NSNumber(value: result)), number: .decimal)
+        var doubleAsString = NumberFormatter.localizedString(from: (NSNumber(value: result)), number: .decimal)
+        if doubleAsString.contains(",") {
+           doubleAsString = doubleAsString.replacingOccurrences(of: ",", with: "")
+        }
         return doubleAsString
     }
 }
