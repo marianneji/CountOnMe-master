@@ -76,11 +76,11 @@
                                                         <rect key="frame" x="0.0" y="162" width="86.5" height="44"/>
                                                         <color key="backgroundColor" red="0.60392156860000001" green="0.57647058819999997" blue="0.56862745100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="26"/>
-                                                        <state key="normal" title=".">
+                                                        <state key="normal" title="C">
                                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         </state>
                                                         <connections>
-                                                            <action selector="tappedDotButton:" destination="eqK-jh-KKu" eventType="touchUpInside" id="OnH-eT-X8O"/>
+                                                            <action selector="tappedClearLast:" destination="eqK-jh-KKu" eventType="touchUpInside" id="mY5-oh-gMK"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
@@ -172,7 +172,7 @@
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OoV-rd-Kuo">
                                                         <rect key="frame" x="0.0" y="162" width="86.5" height="44"/>
-                                                        <color key="backgroundColor" systemColor="systemRedColor" red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="backgroundColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="26"/>
                                                         <state key="normal" title="AC">
                                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -195,7 +195,7 @@
                                                     <constraint firstAttribute="width" secondItem="o36-Qz-3ay" secondAttribute="height" multiplier="1:1" id="G1A-JL-5QD"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="42"/>
-                                                <state key="normal" title="+">
+                                                <state key="normal" title=" + ">
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                                 <connections>
@@ -206,7 +206,7 @@
                                                 <rect key="frame" x="63" y="0.0" width="48" height="48"/>
                                                 <color key="backgroundColor" red="0.87294975829999999" green="0.37112226879999999" blue="0.32504552809999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="42"/>
-                                                <state key="normal" title="-">
+                                                <state key="normal" title=" - ">
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                                 <connections>
@@ -217,7 +217,7 @@
                                                 <rect key="frame" x="126" y="0.0" width="48" height="48"/>
                                                 <color key="backgroundColor" red="0.64980083775839981" green="0.47227414311389665" blue="0.7149516575" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="42"/>
-                                                <state key="normal" title="x">
+                                                <state key="normal" title=" x ">
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                                 <connections>
@@ -228,7 +228,7 @@
                                                 <rect key="frame" x="189" y="0.0" width="48" height="48"/>
                                                 <color key="backgroundColor" red="0.387725070295795" green="0.46226522814659482" blue="0.7149516575" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="42"/>
-                                                <state key="normal" title="/">
+                                                <state key="normal" title=" / ">
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                                 <connections>
@@ -239,7 +239,7 @@
                                                 <rect key="frame" x="252" y="0.0" width="48" height="48"/>
                                                 <color key="backgroundColor" red="0.94643473759999996" green="0.64318747399999998" blue="0.12665354140000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="42"/>
-                                                <state key="normal" title="=">
+                                                <state key="normal" title=" = ">
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                                 <connections>
@@ -270,7 +270,7 @@
                         <viewLayoutGuide key="safeArea" id="AWJ-Vl-uau"/>
                     </view>
                     <connections>
-                        <outlet property="equalButton" destination="qMj-Of-bCU" id="mLw-wP-0vK"/>
+                        <outlet property="clearButton" destination="pqg-Uz-Vh8" id="FHn-ig-sM6"/>
                         <outlet property="textView" destination="T2H-yn-nBB" id="yqe-Yo-Sag"/>
                         <outletCollection property="numberButtons" destination="S66-ub-JAX" collectionClass="NSMutableArray" id="2lv-EY-kZ4"/>
                         <outletCollection property="numberButtons" destination="UDN-zf-T0y" collectionClass="NSMutableArray" id="EsS-4s-VvX"/>
@@ -282,11 +282,6 @@
                         <outletCollection property="numberButtons" destination="jd7-ld-hSU" collectionClass="NSMutableArray" id="U3Z-si-yYe"/>
                         <outletCollection property="numberButtons" destination="EPx-3X-zTa" collectionClass="NSMutableArray" id="tmM-9D-IHt"/>
                         <outletCollection property="numberButtons" destination="lad-SR-mqj" collectionClass="NSMutableArray" id="0dq-6F-JO8"/>
-                        <outletCollection property="numberButtons" destination="pqg-Uz-Vh8" collectionClass="NSMutableArray" id="gam-mr-nC1"/>
-                        <outletCollection property="operatorsButtons" destination="o36-Qz-3ay" collectionClass="NSMutableArray" id="qQZ-H4-dsz"/>
-                        <outletCollection property="operatorsButtons" destination="3zr-HC-0N9" collectionClass="NSMutableArray" id="YjH-75-Fjw"/>
-                        <outletCollection property="operatorsButtons" destination="DQU-P5-55X" collectionClass="NSMutableArray" id="CFE-JS-glK"/>
-                        <outletCollection property="operatorsButtons" destination="FN3-Yd-ksV" collectionClass="NSMutableArray" id="3PP-Zw-50s"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7XP-3c-sJZ" sceneMemberID="firstResponder"/>
