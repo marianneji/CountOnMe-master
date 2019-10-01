@@ -11,112 +11,66 @@ import UIKit
 class ViewController: UIViewController {
     @IBOutlet weak var textView: UITextView!
     @IBOutlet var numberButtons: [UIButton]!
-    @IBOutlet weak var equalButton: UIButton!
-    @IBOutlet var operatorsButtons: [UIButton]!
+    @IBOutlet weak var clearButton: UIButton!
 
     let simpleCalc = SimpleCalc()
-
-    var elements: [String] {
-        return textView.text.split(separator: " ").map { "\($0)" }
-    }
-
-    var expressionHaveResultOr0: Bool {
-        return textView.text.firstIndex(of: "=") != nil || textView.text == "0"
-    }
 
     // View Life cycles
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
-    fileprivate func disableOperatorsButtons() {
-        for button in operatorsButtons {
-            button.isEnabled = false
-        }
-    }
-    fileprivate func enableOperatorsButtons() {
-           for button in operatorsButtons {
-               button.isEnabled = true
-           }
-       }
-
-    fileprivate func allClear() {
-        textView.text.removeAll()
-        textView.text = "0"
-        equalButton.isEnabled = true
-        enableOperatorsButtons()
+        simpleCalc.displayAlertDelegate = self
     }
 
-    fileprivate func errorAlert(_ message: String) {
-        let alertVC = UIAlertController(title: "Erreur", message: message, preferredStyle: .alert)
-        alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-        self.present(alertVC, animated: true, completion: nil)
+    @IBAction func tappedClearLast(_ sender: UIButton) {
+        textView.text = simpleCalc.clearLastAction()
+        print(simpleCalc.elements)
+
     }
-    // View actions
     @IBAction func tappedNumberButton(_ sender: UIButton) {
-        equalButton.isEnabled = true
-        enableOperatorsButtons()
         guard let numberText = sender.title(for: .normal) else {
             return
         }
-        if expressionHaveResultOr0 {
-            textView.text = ""
-        }
-        textView.text.append(numberText)
-    }
-    @IBAction func tappedDotButton(_ sender: UIButton) {
-        guard let dotNumber = sender.title(for: .normal) else { return }
-        if simpleCalc.canAddDot(elements) {
-            textView.text.append(dotNumber)
-        } else {
-            errorAlert("Vous ne pouvez pas rajouter de virgule")
-        }
-    }
-
-    @IBAction func tappedClearButton(_ sender: UIButton) {
-        allClear()
+        textView.text = simpleCalc.addNumber(numberText)
+        clearButton.isEnabled = true
     }
 
     @IBAction func tappedAdditionButton(_ sender: UIButton) {
-        if simpleCalc.canAddOperator(elements) {
-            textView.text.append(" + ")
-        } else {
-            errorAlert("Un operateur est déja mis !")
-        }
+        textView.text = simpleCalc.addOperator(.addition)
+        print(simpleCalc.elements)
     }
 
     @IBAction func tappedSubstractionButton(_ sender: UIButton) {
-        if simpleCalc.canAddOperator(elements) {
-            textView.text.append(" - ")
-        } else {
-            errorAlert("Un operateur est déja mis !")
-        }
+        textView.text = simpleCalc.addOperator(.substraction)
     }
 
     @IBAction func tappedDivisionButton(_ sender: UIButton) {
-        if simpleCalc.canAddOperator(elements) {
-            textView.text.append(" / ")
-        } else {
-            errorAlert("Un operateur est déja mis !")
-        }
+        textView.text = simpleCalc.addOperator(.division)
     }
 
     @IBAction func tappedMultiplicationButton(_ sender: UIButton) {
-        if simpleCalc.canAddOperator(elements) {
-            textView.text.append(" x ")
-        } else {
-            errorAlert("Un operateur est déja mis !")
-        }
+        textView.text = simpleCalc.addOperator(.multiplication)
     }
 
     @IBAction func tappedEqualButton(_ sender: UIButton) {
-        guard simpleCalc.expressionHaveEnoughElement(elements) else {
-            return errorAlert("Entrez une expression correcte !")
-        }
+        textView.text = simpleCalc.calculate()
+        clearButton.isEnabled = false
+        print(simpleCalc.elements)
+    }
 
-        if let result = simpleCalc.reduceOperation(elements) {
-            textView.text.append(" = \(result)")
-            sender.isEnabled = false
-            disableOperatorsButtons()
-        }
+    @IBAction func tappedClearButton(_ sender: UIButton) {
+        textView.text = simpleCalc.clearOperations()
+        print(simpleCalc.elements)
+    }
+}
+
+extension ViewController: DisplayAlert {
+     func errorAlert(_ message: String) {
+        let alertVC = UIAlertController(title: "Erreur",
+                                        message: message,
+                                        preferredStyle: .alert)
+        alertVC.addAction(UIAlertAction(title: "OK",
+                                        style: .cancel,
+                                        handler: nil))
+        present(alertVC, animated: true)
     }
 }
