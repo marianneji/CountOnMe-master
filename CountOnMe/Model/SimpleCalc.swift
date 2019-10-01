@@ -8,54 +8,162 @@
 
 import Foundation
 
-struct SimpleCalc {
+protocol DisplayAlert: class {
+    func errorAlert(_ message: String)
+}
+
+class SimpleCalc {
+
+    weak var displayAlertDelegate: DisplayAlert?
+    var calculatorText = "0"
+    var result = Double()
+
+    enum Operators: String {
+        case addition = "+"
+        case substraction = "-"
+        case multiplication = "x"
+        case division = "/"
+    }
+
+    var elements: [String] {
+        return calculatorText.split(separator: " ").map { "\($0)" }
+    }
 
     // MARK: Error Checks
-    func expressionHaveEnoughElement(_ elements: [String]) -> Bool {
+    private var expressionHaveEnoughElement: Bool {
         return elements.count >= 3
     }
 
-    func canAddOperator(_ elements: [String]) -> Bool {
+    private var canAddOperator: Bool {
         return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != "/"
     }
-
-    func canAddDot(_ elements: [String]) -> Bool {
-        if let lastElement = elements.last { return Double(lastElement) != nil }
-        return false
+    private var removeOperator: Bool {
+        return
+            calculatorText.last == "+" ||
+                calculatorText.last == "-" ||
+                calculatorText.last == "x" ||
+                calculatorText.last == "/"
     }
 
-    // Iterate over operations while an operand still here
-    func reduceOperation(_ elements: [String]) -> String? {
+    private var expressionHaveResult: Bool {
+        return calculatorText.firstIndex(of: "=") != nil || calculatorText == "0"
+    }
+
+    func addNumber(_ numberText: String) -> String {
+        if expressionHaveResult {
+            calculatorText = ""
+        }
+        calculatorText.append(numberText)
+        return calculatorText
+    }
+
+    func addOperator(_ operand: Operators) -> String {
+        if expressionHaveResult {
+            displayAlertDelegate?.errorAlert("Rentrez un chiffre pour démarrer votre calcul")
+            calculatorText = "0"
+            return calculatorText
+        }
+        if canAddOperator {
+            calculatorText.append(" " + operand.rawValue + " ")
+        } else {
+            displayAlertDelegate?.errorAlert("Un operateur est déja mis !")
+        }
+        return calculatorText
+    }
+
+    fileprivate func removeUseless0() -> Bool {
+        for element in elements where element.first == "0" {
+                calculatorText = calculatorText.replacingOccurrences(of: "0", with: "")
+        }
+        return true
+    }
+
+    fileprivate func convertForResult(_ operationsToReduce: inout [String], _ operationIndex: Int) {
+        operationsToReduce.remove(at: operationIndex + 1)
+        operationsToReduce.remove(at: operationIndex)
+        operationsToReduce.remove(at: operationIndex - 1)
+        operationsToReduce.insert("\(removeDotZero(result))", at: operationIndex - 1)
+    }
+
+    fileprivate func reduceOperation() -> String {
         var operationsToReduce = elements
-        var result: Double
 
         while operationsToReduce.count > 1 {
-            let left = Double(operationsToReduce[0])!
-            let operand = operationsToReduce[1]
-            let right = Double(operationsToReduce[2])!
 
+            var operationIndex = Int()
+            if let priorityOperator = operationsToReduce.firstIndex(where: { $0 == "x" || $0 == "/"}) {
+                operationIndex = priorityOperator
+            } else {
+                operationIndex = 1
+            }
+            let operand = operationsToReduce[operationIndex]
+            guard let left = Double(operationsToReduce[operationIndex - 1]),
+                let right = Double(operationsToReduce[operationIndex + 1]) else { calculatorText = ""
+                    displayAlertDelegate?.errorAlert("Erreur inconnue !") // due of stability
+                    return calculatorText
+            }
             switch operand {
             case "+": result = left + right
             case "-": result = left - right
             case "x": result = left * right
             case "/": result = left / right
             if right == 0 {
-                return "Erreur"
+                displayAlertDelegate?.errorAlert("Division par 0 impossible")
+                calculatorText = "0"
+                return calculatorText
                 }
-            default: fatalError("Unknown operator !")
+            default: displayAlertDelegate?.errorAlert("Démarrez un nouveau calcul")
+            calculatorText = "0"
+            return calculatorText
             }
-
-            operationsToReduce = Array(operationsToReduce.dropFirst(3))
-            operationsToReduce.insert("\(removeDotZero(result: result))", at: 0)
+            convertForResult(&operationsToReduce, operationIndex)
         }
-        return operationsToReduce.first!
+        if let returnValue = operationsToReduce.first {
+            calculatorText.append(" = \(returnValue)")
+        }
+        return calculatorText
     }
-    // remove dot and zero to display an number
-    private func removeDotZero(result: Double) -> String {
+
+    func calculate() -> String {
+
+        guard canAddOperator else {
+            displayAlertDelegate?.errorAlert("Un opérateur est déjà mis")
+            return calculatorText
+        }
+        guard expressionHaveEnoughElement else {
+            displayAlertDelegate?.errorAlert("Il manque des éléments pour le calcul")
+            return calculatorText
+        }
+        guard removeUseless0() else {
+            return calculatorText
+        }
+
+        return reduceOperation()
+    }
+    // remove dot and coma to display a number
+    private func removeDotZero(_ result: Double) -> String {
         var doubleAsString = NumberFormatter.localizedString(from: (NSNumber(value: result)), number: .decimal)
         if doubleAsString.contains(",") {
-           doubleAsString = doubleAsString.replacingOccurrences(of: ",", with: "")
+            doubleAsString = doubleAsString.replacingOccurrences(of: ",", with: "")
         }
         return doubleAsString
+    }
+
+    func clearOperations() -> String {
+        calculatorText = "0"
+        return calculatorText
+
+    }
+
+    func clearLastAction() -> String {
+        if !calculatorText.isEmpty {
+            calculatorText.removeLast()
+            if removeOperator {
+                calculatorText = String(calculatorText.dropLast(2))
+            }
+        } else {
+            calculatorText = ""
+        }
+        return calculatorText
     }
 }
