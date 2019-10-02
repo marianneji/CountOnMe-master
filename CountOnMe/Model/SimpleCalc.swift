@@ -29,7 +29,7 @@ class SimpleCalc {
         return calculatorText.split(separator: " ").map { "\($0)" }
     }
 
-    // MARK: Error Checks
+    // MARK: Computed property to check errors
     private var expressionHaveEnoughElement: Bool {
         return elements.count >= 3
     }
@@ -37,12 +37,12 @@ class SimpleCalc {
     private var canAddOperator: Bool {
         return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != "/"
     }
+
     private var removeOperator: Bool {
-        return
-            calculatorText.last == "+" ||
-                calculatorText.last == "-" ||
-                calculatorText.last == "x" ||
-                calculatorText.last == "/"
+        return calculatorText.last == "+" ||
+            calculatorText.last == "-" ||
+            calculatorText.last == "x" ||
+            calculatorText.last == "/"
     }
 
     private var expressionHaveResult: Bool {
@@ -71,20 +71,6 @@ class SimpleCalc {
         return calculatorText
     }
 
-    fileprivate func removeUseless0() -> Bool {
-        for element in elements where element.first == "0" {
-                calculatorText = calculatorText.replacingOccurrences(of: "0", with: "")
-        }
-        return true
-    }
-
-    fileprivate func convertForResult(_ operationsToReduce: inout [String], _ operationIndex: Int) {
-        operationsToReduce.remove(at: operationIndex + 1)
-        operationsToReduce.remove(at: operationIndex)
-        operationsToReduce.remove(at: operationIndex - 1)
-        operationsToReduce.insert("\(removeDotZero(result))", at: operationIndex - 1)
-    }
-
     fileprivate func reduceOperation() -> String {
         var operationsToReduce = elements
 
@@ -98,8 +84,9 @@ class SimpleCalc {
             }
             let operand = operationsToReduce[operationIndex]
             guard let left = Double(operationsToReduce[operationIndex - 1]),
-                let right = Double(operationsToReduce[operationIndex + 1]) else { calculatorText = ""
-                    displayAlertDelegate?.errorAlert("Erreur inconnue !") // due of stability
+                let right = Double(operationsToReduce[operationIndex + 1]) else {
+                    calculatorText = ""
+                    displayAlertDelegate?.errorAlert("Erreur inconnue !") // should not appear
                     return calculatorText
             }
             switch operand {
@@ -116,7 +103,10 @@ class SimpleCalc {
             calculatorText = "0"
             return calculatorText
             }
-            convertForResult(&operationsToReduce, operationIndex)
+            operationsToReduce.remove(at: operationIndex + 1)
+            operationsToReduce.remove(at: operationIndex)
+            operationsToReduce.remove(at: operationIndex - 1)
+            operationsToReduce.insert("\(removeDotZero(result))", at: operationIndex - 1)
         }
         if let returnValue = operationsToReduce.first {
             calculatorText.append(" = \(returnValue)")
@@ -134,9 +124,6 @@ class SimpleCalc {
             displayAlertDelegate?.errorAlert("Il manque des éléments pour le calcul")
             return calculatorText
         }
-        guard removeUseless0() else {
-            return calculatorText
-        }
 
         return reduceOperation()
     }
@@ -152,7 +139,6 @@ class SimpleCalc {
     func clearOperations() -> String {
         calculatorText = "0"
         return calculatorText
-
     }
 
     func clearLastAction() -> String {
@@ -162,6 +148,7 @@ class SimpleCalc {
                 calculatorText = String(calculatorText.dropLast(2))
             }
         } else {
+            displayAlertDelegate?.errorAlert("Aucun élément à effacer")
             calculatorText = ""
         }
         return calculatorText
