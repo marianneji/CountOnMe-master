@@ -12,13 +12,20 @@ class ViewController: UIViewController {
     @IBOutlet weak var textView: UITextView!
     @IBOutlet var numberButtons: [UIButton]!
     @IBOutlet weak var clearButton: UIButton!
+    @IBOutlet var operatorsButtons: [UIButton]!
 
-    let simpleCalc = SimpleCalc()
+    var simpleCalc = SimpleCalc()
 
     // View Life cycles
     override func viewDidLoad() {
         super.viewDidLoad()
         simpleCalc.displayAlertDelegate = self
+    }
+
+    func enableOperatorsButton(_ set: Bool) {
+        for button in operatorsButtons {
+            button.isEnabled = set
+        }
     }
 
     @IBAction func tappedClearLast(_ sender: UIButton) {
@@ -32,6 +39,7 @@ class ViewController: UIViewController {
         }
         textView.text = simpleCalc.addNumber(numberText)
         clearButton.isEnabled = true
+        enableOperatorsButton(true)
     }
 
     @IBAction func tappedAdditionButton(_ sender: UIButton) {
@@ -54,11 +62,13 @@ class ViewController: UIViewController {
     @IBAction func tappedEqualButton(_ sender: UIButton) {
         textView.text = simpleCalc.calculate()
         clearButton.isEnabled = false
+        enableOperatorsButton(false)
         print(simpleCalc.elements)
     }
 
     @IBAction func tappedClearButton(_ sender: UIButton) {
         textView.text = simpleCalc.clearOperations()
+        enableOperatorsButton(true)
         print(simpleCalc.elements)
     }
 }
