@@ -12,7 +12,7 @@ protocol DisplayAlert: class {
     func errorAlert(_ message: String)
 }
 
-class SimpleCalc {
+struct SimpleCalc {
 
     weak var displayAlertDelegate: DisplayAlert?
     var calculatorText = "0"
@@ -49,7 +49,7 @@ class SimpleCalc {
         return calculatorText.firstIndex(of: "=") != nil || calculatorText == "0"
     }
 
-    func addNumber(_ numberText: String) -> String {
+    mutating func addNumber(_ numberText: String) -> String {
         if expressionHaveResult {
             calculatorText = ""
         }
@@ -57,7 +57,7 @@ class SimpleCalc {
         return calculatorText
     }
 
-    func addOperator(_ operand: Operators) -> String {
+    mutating func addOperator(_ operand: Operators) -> String {
         if expressionHaveResult {
             displayAlertDelegate?.errorAlert("Rentrez un chiffre pour démarrer votre calcul")
             calculatorText = "0"
@@ -71,7 +71,7 @@ class SimpleCalc {
         return calculatorText
     }
 
-    fileprivate func reduceOperation() -> String {
+    fileprivate mutating func reduceOperation() -> String {
         var operationsToReduce = elements
 
         while operationsToReduce.count > 1 {
@@ -114,14 +114,15 @@ class SimpleCalc {
         return calculatorText
     }
 
-    func calculate() -> String {
+    mutating func calculate() -> String {
 
         guard canAddOperator else {
-            displayAlertDelegate?.errorAlert("Un opérateur est déjà mis")
+            displayAlertDelegate?.errorAlert("Un opérateur est déjà mis.")
             return calculatorText
         }
         guard expressionHaveEnoughElement else {
-            displayAlertDelegate?.errorAlert("Il manque des éléments pour le calcul")
+            displayAlertDelegate?.errorAlert("Il manque des éléments pour le calcul.")
+            calculatorText = "0"
             return calculatorText
         }
 
@@ -136,12 +137,12 @@ class SimpleCalc {
         return doubleAsString
     }
 
-    func clearOperations() -> String {
+    mutating func clearOperations() -> String {
         calculatorText = "0"
         return calculatorText
     }
 
-    func clearLastAction() -> String {
+    mutating func clearLastAction() -> String {
         if !calculatorText.isEmpty {
             calculatorText.removeLast()
             if removeOperator {
