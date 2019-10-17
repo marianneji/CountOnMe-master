@@ -117,12 +117,12 @@ class SimpleCalcTests: XCTestCase {
         XCTAssertEqual(simpleCalc.calculatorText, "0")
     }
 
-    func testGivenOneAndNoOPerator_WhenCalculate_ThenNoTextChange() {
+    func testGivenOneAndNoOPerator_WhenCalculate_ThenTextIsReset() {
         numberAddedToTest("1")
 
         calculateOperationTest()
 
-        XCTAssertEqual(simpleCalc.calculatorText, "1")
+        XCTAssertEqual(simpleCalc.calculatorText, "0")
     }
     func testGivenComplexOperationWithBigNumbers_WhenCalculate_ThenResultHasReplacedComa() {
         numberAddedToTest("875")
